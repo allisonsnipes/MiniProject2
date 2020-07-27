@@ -23,20 +23,49 @@
  */
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
- * This is the main method of the main class
- * @param
- * @return
+ * This class is responsible for creating the deck that will be dealt. We begin by creating the deck via an array, 
+ * and for loops for both the suit and number of the card.
  *
  */
-public class BlackjackGameSimulator {
 
-	public static void main(String[] args) {
-		int bet, cash;
-		int pAces = 0;
-		ArrayList<Card> hand;
-
+public class Deck {
+	private ArrayList<Card> deck;
+	
+	Deck(){
+		deck = new ArrayList<Card>();
+		for (int i = 0; i < 4; i++) {
+			for (int j = 1; j < 13; j++) {
+				deck.add(new Card(i,j));
+			}
+		}
 	}
-
+	
+	/**
+	 * This coding block is responsible for shuffling the cards randomly to deal. We need to be able to gather
+	 * random pairs of the cards. We will need to use the card class in order for this section to work.
+	 */	
+	
+	public void mixCards() {
+		Random shuffleCards = new Random();
+		Card holder;
+		for (int i = 0; i <= 52; i++) {
+			int shuffleOne = shuffleCards.nextInt(deck.size() - 1);
+			int shuffleTwo = shuffleCards.nextInt(deck.size() - 1);
+			holder = deck.get(shuffleTwo);
+			deck.set(shuffleTwo, deck.get(shuffleOne));
+			deck.set(shuffleOne, holder);
+		}
+	}
+	
+	/**
+	 * Draws a random card from the top and shifts everything in the array to the left.
+	 */	
+	public Card draw() {
+		return deck.remove(0);
+	}
+	
+	
 }

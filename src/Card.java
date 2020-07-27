@@ -22,21 +22,59 @@
  *  @version 1.0
  */
 
-import java.util.ArrayList;
-
 /**
- * This is the main method of the main class
+ * This class is responsible for creating the cards in the deck.
  * @param
  * @return
  *
  */
-public class BlackjackGameSimulator {
 
-	public static void main(String[] args) {
-		int bet, cash;
-		int pAces = 0;
-		ArrayList<Card> hand;
-
+public class Card {
+	//so other classes or methods cant change or mess with it
+	private int number, suit, rank;
+	
+	private static String[] suits = {"Spade", "Diamond", "Club", "Heart"};
+	private static String[] numbers = {"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Joker", "Queen", "King"};
+	
+	public int getSuit() {
+		return suit;
 	}
-
+	
+	public void setSuit(int suit) {
+		this.suit = suit;
+	}
+	
+	public int getRank() {
+		return rank;
+	}
+	
+	public void setRank() {
+		this.rank = rank;
+	}
+	
+	public int getSpecificCard() {
+		if (rank == 1) {
+			number = 11;
+		} else if (rank > 9) {
+			number = 10;
+		} else {
+			number = number;
+		}
+		
+		return number;
+	} 
+	
+	public void setSpecificCard(int number) {
+		this.number = number;
+	}
+	
+	Card (int suits, int specificCard) {
+		this.suit = suit;
+		this.number = number;
+		this.rank = specificCard;
+	}
+	
+	public String toString() {
+		return numbers[rank] + " of suit " + suits[suit];
+	}
 }
