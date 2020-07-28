@@ -33,7 +33,7 @@ public class Card {
 	//so other classes or methods cant change or mess with it
 	private int number, suit, rank;
 	
-	private static String[] suits = {"Spade", "Diamond", "Club", "Heart"};
+	private static String[] suits = {"Spades", "Diamonds", "Clubs", "Hearts"};
 	private static String[] numbers = {"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Joker", "Queen", "King"};
 	
 	public int getSuit() {

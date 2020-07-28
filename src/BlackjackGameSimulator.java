@@ -23,6 +23,8 @@
  */
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * This is the main method of the main class
@@ -31,12 +33,252 @@ import java.util.ArrayList;
  *
  */
 public class BlackjackGameSimulator {
-
+	
 	public static void main(String[] args) {
-		int bet, cash;
-		int pAces = 0;
-		ArrayList<Card> hand;
+		headerMsg();
+		int pAces, bet, cash, playerHand;
+		
+		System.out.println("How much money would you like to put in your reserves?\n");
+		Scanner input = new Scanner(System.in);
+		cash = input.nextInt();
+		System.out.println("\nYou have $" + cash + " in your reserves\n");
+		
+		System.out.println("\nHow much money would you like to bet?\n");
+		bet = input.nextInt();
+		System.out.println("\nYou placed a $" + bet + " bet. You have $" + (cash - bet) + " in your reserves.\n");
+		
+		if (bet > cash) {
+			System.out.print("\nYou cannot bet more money than what you have in reserves. Please try again\n");
+			bet = input.nextInt();
+		}
+		
+		while(cash > 0) {
+			Deck deck = new Deck();
+			deck.mixCards();
+			pAces = 0;
+			Dealer dealer = new Dealer(deck);
+			ArrayList<Card> hand = new ArrayList<>();
+			hand.add(deck.draw());
+			hand.add(deck.draw());
+			System.out.print("\nLet's see your hand and what you're working with: ");
+			System.out.println(hand);
+			playerHand = PairValue(hand);
+			
+			System.out.print("\nThis is what the Dealer is working with: ");
+			dealer.showDealerHand();
+			
+			if(playerWins(playerHand) && dealer.dealerWins()) {
+				Tie();
+				System.out.println("\nPlayer you will get $" + bet + "back.");
+			} else if (playerWins(playerHand)) {
+				Wins();
+				System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+			} else if (dealer.dealerWins()) {
+				Lost();
+				System.out.println("\nYou lost your bet of $" + bet + ".");
+				cash = cash - bet;
+				System.out.println("\nYour cash reserve is now $" + cash + ".");	
+			}
+			
+			System.out.println("\nWould you like to stay (s) or hit (h)?");
+			String choice = input.nextLine();
+			
+			while(choice.equals("h")) {
+				PlayerHit(deck, hand);
+				System.out.print("\nThis is your new hand: ");
+				System.out.println(hand);
+				playerHand = PairValue(hand);
+				
+				if(NextRound(playerHand)) {
+					Lost();
+					System.out.println("\nYou lost your bet of $" + bet + ".");
+					cash = cash - bet;
+					System.out.println("\nYour cash reserve is now $" + cash + ".");
+					break;
+				}				
+			}
+			
+			while(choice.equals("s")) {
+				int dealerHand = dealer.interactionDealer(deck);
+				System.out.print("\nThis is what the Dealer is working with: ");
+				dealer.showDealerHand();
+				
+				if(dealerHand> 21 ) {
+					Wins();
+					System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+				} else {
+					int dealerNumber = 21 - dealerHand;
+					int playerNumber = 21 - playerHand;
+						if (playerNumber > dealerNumber) {
+							Lost();
+							System.out.println("\nYou lost your bet of $" + bet + ".");
+							cash = cash - bet;
+							System.out.println("\nYour cash reserve is now $" + cash + ".");
+							break;
+						} 
+						if (playerNumber < dealerNumber) {
+							Wins();
+							System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+							System.out.println("\nJob well done!");
+							break;
+						}
+						if (playerNumber == dealerNumber){
+							Tie();
+							System.out.println("\nPlayer you will get $" + bet + "back.");
+							break;
+						}
+					}
+				}	
+			}
+		
+	System.out.println("\nWould you like to gamble again? Please answer (Y)/(N).");
+	String response = input.nextLine();
+	while(response != null) {
+		System.out.print("Please make a valid selection of (Y) or (N).");
+		response = input.nextLine();
+	}
+	while(response.equals("N")) {
+		break;
+	}
 
+}
+	
+	/**
+	 * This is adds up the players cards to see if they have Black Jack.
+	 * @param hand
+	 * @return playerHand
+	 *
+	 */
+	
+	public static int PairValue(List<Card> hand) {
+		Card[] dHand = new Card[] {};
+		dHand = hand.toArray(dHand);
+		int playerHand = 0;
+		int pAces = 0;
+		for (int i =0; i < dHand.length; i++) {
+			playerHand += dHand[i].getSpecificCard();
+			if (dHand[i].getSpecificCard() == 11) {
+				pAces++;
+			}
+			
+			while(pAces > 0 && playerHand > 21) {
+				playerHand -= 10;
+				pAces--;
+			}
+		}
+		
+		return playerHand;
+	}
+	
+	/**
+	 * This is the necessary condition for the user to have a Black Jack.
+	 * @param hand
+	 * @return playerHand
+	 *
+	 */
+	
+	public static boolean playerWins(int playerHand) {
+		if(playerHand ==21) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * This will be executed if there is a tie between the dealer and player.
+	 * @param hand
+	 * @return playerHand
+	 *
+	 */
+	public static void Tie() {
+		System.out.println("There is a tie, no money was lost--but no money gained.");
+	
+	}
+	
+	/**
+	 * This will be executed if the player wins.
+	 * @param hand
+	 * @return playerHand
+	 *
+	 */
+	public static void Wins() {
+		System.out.println("Player you won!");
+	
+	}
+	
+	/**
+	 * This will be executed if the player looses.
+	 * @param hand
+	 * @return playerHand
+	 *
+	 */
+	
+	public static void Lost() {
+		System.out.println("You did not win. Whomp whomp!");
+	
+	}
+	
+	/**
+	 * This will be executed if the player decides to take a hit from the dealer.
+	 * @param hand
+	 * @return playerHand
+	 *
+	 */
+	
+	public static void PlayerHit(Deck deck, List<Card> hand) {
+		hand.add(deck.draw());
+		Card[] dHand = new Card[] {};
+		dHand = hand.toArray(dHand);
+		int playerHand = 0;
+		int pAces = 0;
+		for (int i = 0; i < dHand.length; i++) {
+			playerHand += dHand[i].getSpecificCard();
+			if(dHand[i].getSpecificCard() == 1) {
+				pAces++;
+			}
+			while (pAces >0 && playerHand > 21) {
+				playerHand -= 10;
+				pAces--;
+			}
+		}
+	}
+	
+	/**
+	 * This will be executed to check if the user overshot the 21 limit.
+	 * @param playerHand
+	 * @return boolean
+	 *
+	 */
+	
+	public static boolean NextRound(int playerHand) {
+		if(playerHand > 21) {
+			System.out.println("I am sorry but you lost this round. Your pair is over the 21 limit.");
+			return true;
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * This is the display message that will be displayed to the player
+	 * @param
+	 * @return
+	 *
+	 */
+	
+	public static void headerMsg() {
+		System.out.println("\n");
+		System.out.println("+------------------------------------------------------------------------------+");
+		System.out.println("|                                   Welcome User,                              |");
+		System.out.println("|          This application is a simple Black Jack game, which will utilize    |");
+		System.out.println("|   the skills, knowledge, and topics discussed up until this point. In order  |");
+		System.out.println("|  to play the game you must do the following: set a bet, starting cash level. |");
+		System.out.println("| At somepoint during the game you will need to make a decision to either stay |");
+		System.out.println("| or take another hit from the Dealer. If you would like to pull another card  |");
+		System.out.println("|        enter (h), and if you would like to stay with your hand enter (s).    |");
+		System.out.println("|                                    Let's begin!                              |");
+		System.out.println("+------------------------------------------------------------------------------+");
+		System.out.println("\n");
 	}
 
 }

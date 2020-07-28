@@ -69,7 +69,7 @@ public class Dealer {
 	public void showOne() {
 		Card[] oneCard = new Card[] {};
 		oneCard = hand.toArray(oneCard);
-		System.out.println("[ " + oneCard + "]");
+		System.out.println(oneCard);
 		
 	}
 	
@@ -126,7 +126,7 @@ public class Dealer {
 	
 	public boolean dealerWins() {
 		if(hand.size() == 2 && dealerHand == 21) {
-			System.out.println("The Dealer has won this round.");
+			System.out.println("The Dealer has Black Jack!");
 			return true;
 		} else {
 			return false;
