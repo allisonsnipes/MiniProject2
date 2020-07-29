@@ -24,8 +24,6 @@
 
 /**
  * This class is responsible for creating the cards in the deck.
- * @param
- * @return
  *
  */
 
@@ -34,47 +32,84 @@ public class Card {
 	private int number, suit, rank;
 	
 	private static String[] suits = {"Spades", "Diamonds", "Clubs", "Hearts"};
-	private static String[] numbers = {"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Joker", "Queen", "King"};
+	private static String[] ranks = {"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Joker", "Queen", "King"};
 	
+	/**
+	 * This class is responsible for creating the cards in the deck.
+	 * @return the suit of the card
+	 *
+	 */
 	public int getSuit() {
 		return suit;
 	}
+	
+	/**
+	 * This class is responsible for creating the cards in the deck.
+	 * @param suit sets the suit's characteristic
+	 *
+	 */
 	
 	public void setSuit(int suit) {
 		this.suit = suit;
 	}
 	
+	/**
+	 * This class is responsible for creating the cards in the deck.
+	 * @return the rank of the card
+	 *
+	 */
 	public int getRank() {
 		return rank;
 	}
 	
-	public void setRank() {
+	/**
+	 * This class is responsible for creating the cards in the deck.
+	 * @param rank sets the rank of the card
+	 *
+	 */
+	
+	public void setRank(int rank) {
 		this.rank = rank;
 	}
 	
+	/**
+	 * This class is responsible for creating the cards in the deck.
+	 * @return the number of the specific card
+	 *
+	 */
 	public int getSpecificCard() {
 		if (rank == 1) {
 			number = 11;
-		} else if (rank > 9) {
+		} else if (rank > 10) {
 			number = 10;
 		} else {
-			number = number;
+			number = rank;
 		}
 		
 		return number;
 	} 
 	
-	public void setSpecificCard(int number) {
-		this.number = number;
+	/**
+	 * This class is responsible for creating the cards in the deck.
+	 * @param number sets the number of the specific card
+	 *
+	 */
+	public void setSpecificCard(int set) {
+		this.number = set;
 	}
 	
 	Card (int suits, int specificCard) {
 		this.suit = suit;
-		this.number = number;
 		this.rank = specificCard;
 	}
 	
+	/**
+	 * This class is responsible for creating the cards in the deck.
+	 * @return the suit and sumber of the card
+	 *
+	 */
+	
 	public String toString() {
-		return numbers[rank] + " of suit " + suits[suit];
+		return ranks[rank] + " of suit " + suits[suit];
 	}
 }

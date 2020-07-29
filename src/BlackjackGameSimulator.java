@@ -28,15 +28,13 @@ import java.util.Scanner;
 
 /**
  * This is the main method of the main class
- * @param
- * @return
  *
  */
 public class BlackjackGameSimulator {
 	
 	public static void main(String[] args) {
 		headerMsg();
-		int pAces, bet, cash, playerHand;
+		int bet, cash, playerHand;
 		
 		System.out.println("How much money would you like to put in your reserves?\n");
 		Scanner input = new Scanner(System.in);
@@ -55,9 +53,8 @@ public class BlackjackGameSimulator {
 		while(cash > 0) {
 			Deck deck = new Deck();
 			deck.mixCards();
-			pAces = 0;
 			Dealer dealer = new Dealer(deck);
-			ArrayList<Card> hand = new ArrayList<>();
+			List<Card> hand = new ArrayList<>();
 			hand.add(deck.draw());
 			hand.add(deck.draw());
 			System.out.print("\nLet's see your hand and what you're working with: ");
@@ -65,7 +62,7 @@ public class BlackjackGameSimulator {
 			playerHand = PairValue(hand);
 			
 			System.out.print("\nThis is what the Dealer is working with: ");
-			dealer.showDealerHand();
+			dealer.showOne();
 			
 			if(playerWins(playerHand) && dealer.dealerWins()) {
 				Tie();
@@ -83,6 +80,11 @@ public class BlackjackGameSimulator {
 			System.out.println("\nWould you like to stay (s) or hit (h)?");
 			String choice = input.nextLine();
 			
+			while(!checkHitStay(choice)) {
+				System.out.println("\nWould you like to stay (s) or hit (h)?");
+				choice = input.nextLine();
+			}
+			
 			while(choice.equals("h")) {
 				PlayerHit(deck, hand);
 				System.out.print("\nThis is your new hand: ");
@@ -95,7 +97,7 @@ public class BlackjackGameSimulator {
 					cash = cash - bet;
 					System.out.println("\nYour cash reserve is now $" + cash + ".");
 					break;
-				}				
+				}	
 			}
 			
 			while(choice.equals("s")) {
@@ -103,7 +105,7 @@ public class BlackjackGameSimulator {
 				System.out.print("\nThis is what the Dealer is working with: ");
 				dealer.showDealerHand();
 				
-				if(dealerHand> 21 ) {
+				if(dealerHand > 21 ) {
 					Wins();
 					System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
 				} else {
@@ -131,22 +133,54 @@ public class BlackjackGameSimulator {
 				}	
 			}
 		
-	System.out.println("\nWould you like to gamble again? Please answer (Y)/(N).");
-	String response = input.nextLine();
-	while(response != null) {
-		System.out.print("Please make a valid selection of (Y) or (N).");
-		response = input.nextLine();
-	}
-	while(response.equals("N")) {
-		break;
-	}
+		while(cash <= 0){
+			System.out.println("\nThank you for playing, unfornuately you do not have any more money to play with.");
+			break;
+		}
+		
+		System.out.println("\nWould you like to gamble again? Please answer (Y)/(N).");
+		String response = input.nextLine();
+		
+		if(response.equals("y")){
+			System.out.println("How much money would you like to put in your reserves?\n");
+			input = new Scanner(System.in);
+			cash = input.nextInt();
+			
+			while (cash > 0) {
+				Deck deck = new Deck();
+				deck.mixCards();
+				Dealer dealer = new Dealer(deck);
+				List<Card> hand = new ArrayList<>();
+				hand.add(deck.draw());
+				hand.add(deck.draw());
+				System.out.print("\nLet's see your hand and what you're working with: ");
+				System.out.println(hand);
+				playerHand = PairValue(hand);
 
+				System.out.print("\nThis is what the Dealer is working with: ");
+				dealer.showOne();
+
+				if(playerWins(playerHand) && dealer.dealerWins()) {
+					Tie();
+					System.out.println("\nPlayer you will get $" + bet + "back.");
+				} else if (playerWins(playerHand)) {
+					Wins();
+					System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+				} else if (dealer.dealerWins()) {
+					Lost();
+					System.out.println("\nYou lost your bet of $" + bet + ".");
+					cash = cash - bet;
+					System.out.println("\nYour cash reserve is now $" + cash + ".");	
+				}
+			}
+			
+		}
 }
 	
 	/**
 	 * This is adds up the players cards to see if they have Black Jack.
-	 * @param hand
-	 * @return playerHand
+	 * @param hand the array of cards in the player's hand of cards
+	 * @return playerHand the player's hand of cards
 	 *
 	 */
 	
@@ -172,8 +206,9 @@ public class BlackjackGameSimulator {
 	
 	/**
 	 * This is the necessary condition for the user to have a Black Jack.
-	 * @param hand
-	 * @return playerHand
+	 * @param playerHand the player's hand of cards
+	 * @return true when the player wins if their hand equals to 21
+	 * @return false when the player does not win if their hand is not equal to 21
 	 *
 	 */
 	
@@ -186,8 +221,6 @@ public class BlackjackGameSimulator {
 	
 	/**
 	 * This will be executed if there is a tie between the dealer and player.
-	 * @param hand
-	 * @return playerHand
 	 *
 	 */
 	public static void Tie() {
@@ -197,8 +230,6 @@ public class BlackjackGameSimulator {
 	
 	/**
 	 * This will be executed if the player wins.
-	 * @param hand
-	 * @return playerHand
 	 *
 	 */
 	public static void Wins() {
@@ -208,8 +239,6 @@ public class BlackjackGameSimulator {
 	
 	/**
 	 * This will be executed if the player looses.
-	 * @param hand
-	 * @return playerHand
 	 *
 	 */
 	
@@ -220,8 +249,8 @@ public class BlackjackGameSimulator {
 	
 	/**
 	 * This will be executed if the player decides to take a hit from the dealer.
-	 * @param hand
-	 * @return playerHand
+	 * @param deck the created deck of cards
+	 * @param hand the array of cards in the player's hand
 	 *
 	 */
 	
@@ -243,10 +272,28 @@ public class BlackjackGameSimulator {
 		}
 	}
 	
+	
+	/**
+	 * This will be executed to check if player wants to hit or stand.
+	 * @param choice rely's on the user's input of either hitting or staying
+	 * @return true if the player wants to hit
+	 * @return false if the player does not want to play
+	 *
+	 */
+	
+	public static boolean checkHitStay(String choice) {
+		if(choice.equals("h") || (choice.equals("s"))) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * This will be executed to check if the user overshot the 21 limit.
-	 * @param playerHand
-	 * @return boolean
+	 * @param playerHand the player's hand
+	 * @return true if the player's hand has a value over the limit of 21
+	 * @return false if the player's hand has a value under the limit of 21
 	 *
 	 */
 	
@@ -261,8 +308,6 @@ public class BlackjackGameSimulator {
 	
 	/**
 	 * This is the display message that will be displayed to the player
-	 * @param
-	 * @return
 	 *
 	 */
 	

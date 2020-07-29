@@ -28,15 +28,12 @@ import java.util.ArrayList;
  * This is the class that is responsible for the Dealer in the game. We start by building the 
  * dealer's hand.
  *
- * @param
- * @return
- *
  */
 public class Dealer {
 	ArrayList<Card> hand;
 	private int dealerHand = 0;
 	private Card[] dHand;
-	private int dAces = 0;
+	private int dAces;
 	
 	Dealer(Deck deck) {
 		hand = new ArrayList<>();
@@ -61,23 +58,20 @@ public class Dealer {
 	/**
 	 * This method will display one of the Dealer's cards.
 	 *
-	 * @param
-	 * @return
 	 *
 	 */
 	
 	public void showOne() {
 		Card[] oneCard = new Card[] {};
 		oneCard = hand.toArray(oneCard);
-		System.out.println(oneCard);
+		System.out.println(oneCard[0]);
 		
 	}
 	
 	/**
 	 * This method allows for the Dealer to draw again for their second card.
 	 *
-	 * @param
-	 * @return
+	 * @param deck allows the Dealer to draw from the deck
 	 *
 	 */
 	
@@ -102,10 +96,8 @@ public class Dealer {
 	
 	/**
 	 * This method will determine the dealer's strategy of hitting or staying.
-	 *
-	 * @param
-	 * @return
-	 *
+	 * @ return true if the dealer remains under 17 they may draw again
+	 * @return false if the dealer is over 17 they should not draw again
 	 */
 	
 	public boolean hitAgain() {
@@ -118,9 +110,8 @@ public class Dealer {
 	
 	/**
 	 * This method will determine if the dealer is the winner of the round and has Black Jack.
-	 *
-	 * @param
-	 * @return boolean
+	 * @return true if the dealer has a blackjack
+	 * @return false if the dealer does not have blackjack
 	 *
 	 */
 	
@@ -135,14 +126,13 @@ public class Dealer {
 	
 	/**
 	 * This method will determine if the dealer lost the round.
-	 * @param dealerHand2 
-	 *
-	 * @param
-	 * @return boolean
+	 * @param dealerHand2 checks the dealer hand if it is over 21
+	 * @return true if the dealer went over 21
+	 * @return false if the dealer did not go over 21
 	 *
 	 */
 	
-	public boolean dealerLooses(int dealerHand2) {
+	public boolean dealerLooses(int dealerHand) {
 		if(dealerHand > 21) {
 			System.out.println("The Dealer went over 21.");
 			return true;
@@ -152,10 +142,18 @@ public class Dealer {
 	}
 	
 	/**
-	 * This method will display the Dealer's hand.
+	 * This method will grab the dealer's hand.
+	 * @return the value of the dealer's hand
 	 *
-	 * @param
-	 * @return boolean
+	 */
+	
+	public int getHand() {
+		return dealerHand;
+	}
+	
+	
+	/**
+	 * This method will display the Dealer's hand.
 	 *
 	 */
 	
@@ -166,9 +164,8 @@ public class Dealer {
 	/**
 	 * This method is responsible for interaction with the player and displays the dealer hand.
 	 *
-	 * @param deck
-	 * @return 
-	 * @return dealerHand
+	 * @param deck allows the Dealer to draw from the deck
+	 * @return the dealer hand
 	 *
 	 */
 	
