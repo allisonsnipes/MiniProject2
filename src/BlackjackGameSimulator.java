@@ -50,7 +50,7 @@ public class BlackjackGameSimulator {
 			bet = input.nextInt();
 		}
 
-		if (cash > 0){
+		while (cash > 0){
 			Deck deck = new Deck();
 			deck.mixCards();
 			Dealer dealer = new Dealer(deck);
@@ -87,26 +87,8 @@ public class BlackjackGameSimulator {
 					Wins();
 					System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
 				} 
-				
-				System.out.println("Do you wish to hit (h) or stay (s)?");
-				Scanner fourthInput = new Scanner(System.in);
-				String fourthChoice = newInput.nextLine();
-				
-				if(fourthChoice != "n") {
-					PlayerHit(deck, hand);
-					System.out.print("\nThis is your new hand: ");
-					System.out.println(hand);
-					int playerHand4 = PairValue(hand);
-	
-					if(playerHand4 == 21) {
-							System.out.println("\nYou have Blackjack! You won $" + bet + ".");
-							System.out.println("\nYour new reserve is $" + (cash + bet) + ".");
-					} else if (playerHand4 > 21) {
-						System.out.println("\nI am sorry you lost $" + (bet) + ". Your new cash reserve is $" + (cash - bet));
-					}
-				}
-				
-			}else if(choice.equals("s")) {
+
+			} else if(choice.equals("s")) {
 				int dealerHand = dealer.interactionDealer(deck);
 				System.out.print("\nThis is what the Dealer is working with: ");
 				dealer.showDealerHand();
@@ -138,121 +120,96 @@ public class BlackjackGameSimulator {
 					}
 				}
 			}
-			
-			System.out.println("\nWould you like to stay (s) or hit (h)?");
-			Scanner secondInput = new Scanner(System.in);
-			String secondChoice = newInput.nextLine();
-			
-			PlayerHit(deck, hand);
-			System.out.print("\nThis is your new hand: ");
-			System.out.println(hand);
-			int playerHand2 = PairValue(hand);
-
-			if(playerHand2 == 21) {
-					System.out.println("\nYou have Blackjack! You won $" + bet + ".");
-					System.out.println("\nYour new reserve is $" + (cash + bet) + ".");
-			} else if (playerHand2 > 21) {
-				System.out.println("\nI am sorry you lost $" + (bet) + ". Your new cash reserve is $" + (cash - bet));
-			}
-			
-			System.out.println("Do you wish to play again, (Y) or (N)");
-			Scanner thirdInput = new Scanner(System.in);
-			String thirdChoice = newInput.nextLine();
-			
-			if(thirdChoice != "n") {
-				PlayerHit(deck, hand);
-				System.out.print("\nThis is your new hand: ");
-				System.out.println(hand);
-				int playerHand3 = PairValue(hand);
-
-				if(playerHand2 == 21) {
-						System.out.println("\nYou have Blackjack! You won $" + bet + ".");
-						System.out.println("\nYour new reserve is $" + (cash + bet) + ".");
-				} else if (playerHand3 > 21) {
-					System.out.println("\nI am sorry you lost $" + (bet) + ". Your new cash reserve is $" + (cash - bet));
-				}
-			}
 		}
-		
-		if (cash <= 0) {
+
+
+		while (cash <= 0) {
 			System.out.println("\nThank you for playing, unfornuately you do not have any more money to play with.");
 			System.out.println("\nWould you like to gamble again? Please answer (Y)/(N).");
 			String response = input.nextLine();
 
 			if(response.equals("y")){
 				System.out.println("How much money would you like to put in your reserves?\n");
-				input = new Scanner(System.in);
-				cash = input.nextInt();
+				Scanner input2 = new Scanner(System.in);
+				int cash2 = input2.nextInt();
 
-				while (cash > 0) {
-					Deck deck = new Deck();
-					deck.mixCards();
-					Dealer dealer = new Dealer(deck);
-					List<Card> hand = new ArrayList<>();
-					hand.add(deck.draw());
-					hand.add(deck.draw());
-					System.out.print("\nLet's see your hand and what you're working with: ");
-					System.out.println(hand);
-					playerHand = PairValue(hand);
+				while (cash2 > 0) {
+					System.out.println("\nWould you like to stay (s) or hit (h)?");
+					Scanner newInput = new Scanner(System.in);
+					String choice = newInput.nextLine();
 
-					System.out.print("\nThis is what the Dealer is working with: ");
-					dealer.showOne();
+					if (choice.equals("h")) {
+						Deck deck5 = new Deck();
+						deck5.mixCards();
+						Dealer dealer5 = new Dealer(deck5);
+						List<Card> hand5 = new ArrayList<>();
+						hand5.add(deck5.draw());
+						hand5.add(deck5.draw());
+						System.out.print("\nLet's see your hand and what you're working with: ");
+						System.out.println(hand5);
+						int playerHand5 = PairValue(hand5);
 
-					if(playerWins(playerHand) && dealer.dealerWins()) {
-						Tie();
-						System.out.println("\nPlayer you will get $" + bet + "back.");
-						break;
-					} else if (playerWins(playerHand)) {
-						Wins();
-						System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
-						break;
-					} else if (dealer.dealerWins()) {
-						Lost();
-						System.out.println("\nYou lost your bet of $" + bet + ".");
-						cash = cash - bet;
-						System.out.println("\nYour cash reserve is now $" + cash + ".");	
-						break;
-					}
+						System.out.print("\nThis is what the Dealer is working with: ");
+						dealer5.showOne();
 
-					System.out.println("\nWould you like to gamble again? Please answer (Y)/(N).");
-					String responseThree = input.nextLine();
+						if(playerWins(playerHand5) && dealer5.dealerWins()) {
+							Tie();
+							System.out.println("\nPlayer you will get $" + bet + "back.");
+							break;
+						} else if (playerWins(playerHand5)) {
+							Wins();
+							System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+							break;
+						} else if (dealer5.dealerWins()) {
+							Lost();
+							System.out.println("\nYou lost your bet of $" + bet + ".");
+							cash = cash - bet;
+							System.out.println("\nYour cash reserve is now $" + cash + ".");	
+							break;
+						}
+					} else if (choice.equals("s")) {
+						Deck deck = new Deck();
+						deck.mixCards();
+						Dealer dealer = new Dealer(deck);
+						int dealerHand = dealer.interactionDealer(deck);
+						System.out.print("\nThis is what the Dealer is working with: ");
+						dealer.showDealerHand();
+						List<Card> hand = new ArrayList<>();
+						hand.add(deck.draw());
+						hand.add(deck.draw());
+						int playerHand5 = PairValue(hand);
 
-					if(responseThree.equals("y")){
-						System.out.println("How much money would you like to put in your reserves?\n");
-						input = new Scanner(System.in);
-						cash = input.nextInt();
+						if(dealerHand > 21 ) {
+							Wins();
+							System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
 
-						while (cash > 0) {
-							hand.add(deck.draw());
-							hand.add(deck.draw());
-							System.out.print("\nLet's see your hand and what you're working with: ");
-							System.out.println(hand);
-							playerHand = PairValue(hand);
-
-							System.out.print("\nThis is what the Dealer is working with: ");
-							dealer.showOne();
-
-							if(playerWins(playerHand) && dealer.dealerWins()) {
-								Tie();
-								System.out.println("\nPlayer you will get $" + bet + "back.");
-								break;
-							} else if (playerWins(playerHand)) {
-								Wins();
-								System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
-								break;
-							} else if (dealer.dealerWins()) {
+						} else {
+							int dealerNumber = 21 - dealerHand;
+							int playerNumber = 21 - playerHand5;
+							if (playerNumber > dealerNumber) {
 								Lost();
 								System.out.println("\nYou lost your bet of $" + bet + ".");
 								cash = cash - bet;
-								System.out.println("\nYour cash reserve is now $" + cash + ".");	
-								break;
+								System.out.println("\nYour cash reserve is now $" + cash + ".");
+
+							} 
+							if (playerNumber < dealerNumber) {
+								Wins();
+								System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+								System.out.println("\nJob well done!");
+
+							}
+							if (playerNumber == dealerNumber){
+								Tie();
+								System.out.println("\nPlayer you will get $" + bet + "back.");
+
 							}
 						}
 					}
 				}
-			} 
-			
-			if (cash == 0) {
+			}
+
+			while (cash == 0) {
 				System.out.println("\nThank you for playing, unfornuately you do not have any more money to play with.");
 				System.out.println("\nWould you like to gamble again? Please answer (Y)/(N).");
 				Scanner inputTwo = new Scanner(System.in);
@@ -262,41 +219,132 @@ public class BlackjackGameSimulator {
 					System.out.println("How much money would you like to put in your reserves?\n");
 					input = new Scanner(System.in);
 					cash = input.nextInt();
+					System.out.println("How much money would you like to bet?\n");
+					bet = input.nextInt();
 
+					Deck deck6 = new Deck();
+					deck6.mixCards();
+					Dealer dealer6 = new Dealer(deck6);
+					List<Card> hand6 = new ArrayList<>();
+					hand6.add(deck6.draw());
+					hand6.add(deck6.draw());
+					
+					System.out.println("\nWould you like to stay (s) or hit (h)?");
+					String choice = input.nextLine();
+					
 					while (cash > 0) {
-						Deck deck = new Deck();
-						deck.mixCards();
-						Dealer dealer = new Dealer(deck);
-						List<Card> hand = new ArrayList<>();
-						hand.add(deck.draw());
-						hand.add(deck.draw());
-						System.out.print("\nLet's see your hand and what you're working with: ");
-						System.out.println(hand);
-						playerHand = PairValue(hand);
+						if (choice.equals("h")) {
+							System.out.print("\nLet's see your hand and what you're working with: ");
+							System.out.println(hand6);
+							int playerHand6 = PairValue(hand6);
 
-						System.out.print("\nThis is what the Dealer is working with: ");
-						dealer.showOne();
+							System.out.print("\nThis is what the Dealer is working with: ");
+							dealer6.showOne();
 
-						if(playerWins(playerHand) && dealer.dealerWins()) {
-							Tie();
-							System.out.println("\nPlayer you will get $" + bet + "back.");
-							break;
-						} else if (playerWins(playerHand)) {
-							Wins();
-							System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
-							break;
-						} else if (dealer.dealerWins()) {
-							Lost();
-							System.out.println("\nYou lost your bet of $" + bet + ".");
-							cash = cash - bet;
-							System.out.println("\nYour cash reserve is now $" + cash + ".");	
-							break;
+							if(playerWins(playerHand6) && dealer6.dealerWins()) {
+								Tie();
+								System.out.println("\nPlayer you will get $" + bet + "back.");
+								break;
+							} else if (playerWins(playerHand6)) {
+								Wins();
+								System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+								break;
+							} else if (dealer6.dealerWins()) {
+								Lost();
+								System.out.println("\nYou lost your bet of $" + bet + ".");
+								cash = cash - bet;
+								System.out.println("\nYour cash reserve is now $" + cash + ".");	
+								break;
+							}
+						} else if (choice.equals("s")) {
+							Deck deck7 = new Deck();
+							deck7.mixCards();
+							Dealer dealer7 = new Dealer(deck7);
+							int dealerHand7 = dealer7.interactionDealer(deck7);
+							System.out.print("\nThis is what the Dealer is working with: ");
+							dealer7.showDealerHand();
+							hand6.add(deck7.draw());
+							hand6.add(deck7.draw());
+							int playerHand6 = PairValue(hand6);
+
+							if(dealerHand7 > 21 ) {
+								Wins();
+								System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+
+							} else {
+								int dealerNumber = 21 - dealerHand7;
+								int playerNumber = 21 - playerHand6;
+								if (playerNumber > dealerNumber) {
+									Lost();
+									System.out.println("\nYou lost your bet of $" + bet + ".");
+									cash = cash - bet;
+									System.out.println("\nYour cash reserve is now $" + cash + ".");
+
+								} 
+								if (playerNumber < dealerNumber) {
+									Wins();
+									System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+									System.out.println("\nJob well done!");
+
+								}
+								if (playerNumber == dealerNumber){
+									Tie();
+									System.out.println("\nPlayer you will get $" + bet + "back.");
+
+								}
+							}
+
 						}
+					}
+
+					System.out.println("\nWould you like to gamble again? Please answer (Y)/(N).");
+					input = new Scanner(System.in);
+					String responseThree = input.nextLine();
+
+					if(responseThree.equals("y")){
+						System.out.println("How much money would you like to put in your reserves?\n");
+						input = new Scanner(System.in);
+						cash = input.nextInt();
+
+						Deck deck3 = new Deck();
+						deck3.mixCards();
+						Dealer dealer3 = new Dealer(deck3);
+						List<Card> hand3 = new ArrayList<>();
+						hand3.add(deck3.draw());
+						hand3.add(deck3.draw());
+						
+						while (cash > 0) {
+							System.out.print("\nLet's see your hand and what you're working with: ");
+							System.out.println(hand3);
+							int playerHand3 = PairValue(hand3);
+
+							System.out.print("\nThis is what the Dealer is working with: ");
+							dealer3.showOne();
+
+							if(playerWins(playerHand3) && dealer3.dealerWins()) {
+								Tie();
+								System.out.println("\nPlayer you will get $" + bet + "back.");
+								break;
+							} else if (playerWins(playerHand3)) {
+								Wins();
+								System.out.println("\nYour new cash reserves is $" + (cash + bet) + ".");
+								break;
+							} else if (dealer3.dealerWins()) {
+								Lost();
+								System.out.println("\nYou lost your bet of $" + bet + ".");
+								cash = cash - bet;
+								System.out.println("\nYour cash reserve is now $" + cash + ".");	
+								break;
+							}
+						}
+					} 
+					
+					if (responseThree.equals("n")) {
+						break;
 					}
 				}
 			}
 		}
-
 	}
 
 	/**
